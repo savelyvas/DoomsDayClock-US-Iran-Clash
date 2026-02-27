@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>US–Iran Strike Dashboard – 26 Feb 2026</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>US-Iran Strike Dashboard - Feb 27, 2026</title>
   <style>
     :root {
       --bg-dark: #0a0a0a;
@@ -15,17 +16,18 @@
       --text-light: #e0e0e0;
       --text-muted: #999;
     }
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      margin: 0;
       padding: 20px;
       background: radial-gradient(circle at top, #16162b 0, #050509 55%, #000 100%);
       color: var(--text-light);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      min-height: 100vh;
     }
+    /* HEADER */
     .header {
       text-align: center;
-      padding: 24px 16px 60px;
+      padding: 24px 16px 65px;
       border-radius: 20px;
       background: linear-gradient(135deg, #1a1a2e, #141427);
       box-shadow: 0 18px 50px rgba(0,0,0,0.7);
@@ -34,65 +36,72 @@
       overflow: visible;
     }
     .header::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0; left: 0; right: 0; height: 4px;
       background: linear-gradient(90deg, #ff6b35, #f7931e, #4ecdc4);
     }
     h1 {
-      margin: 0 0 4px;
       font-size: 2rem;
       letter-spacing: 0.03em;
       background: linear-gradient(135deg, #ff6b35, #f7931e);
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
+      margin-bottom: 6px;
     }
-    .sub { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 12px; }
+    .sub { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; }
+    /* ALERT BANNER */
+    .alert-banner {
+      background: linear-gradient(135deg, rgba(255,107,53,0.25), rgba(247,147,30,0.2));
+      border: 1px solid #ff6b35;
+      border-radius: 10px;
+      padding: 10px 18px;
+      font-size: 0.9rem;
+      color: #ffd23f;
+      margin: 0 auto 18px;
+      max-width: 800px;
+    }
+    /* CLOCK */
     .clock-wrapper {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-      gap: 24px;
-      margin-top: 20px;
+      gap: 30px;
     }
     .doomsday-clock {
       position: relative;
-      width: 260px;
-      height: 260px;
+      width: 260px; height: 260px;
       border-radius: 50%;
       background:
-        radial-gradient(circle at 30% 20%, rgba(255,255,255,0.15), transparent 55%),
-        radial-gradient(circle at 70% 80%, rgba(255,107,53,0.15), transparent 55%),
+        radial-gradient(circle at 30% 20%, rgba(255,255,255,0.12), transparent 55%),
+        radial-gradient(circle at 70% 80%, rgba(255,107,53,0.12), transparent 55%),
         #111226;
       border: 8px solid #333;
-      box-shadow: inset 0 0 40px rgba(0,0,0,0.9), 0 0 40px rgba(255,107,53,0.4);
+      box-shadow: inset 0 0 40px rgba(0,0,0,0.9), 0 0 50px rgba(255,107,53,0.45);
+      flex-shrink: 0;
     }
     .clock-label {
       position: absolute;
-      top: 40px;
-      left: 50%;
+      top: 38px; left: 50%;
       transform: translateX(-50%);
-      font-size: 0.95rem;
+      font-size: 0.85rem;
       color: #ffd23f;
-      font-weight: 600;
+      font-weight: 700;
       letter-spacing: 0.15em;
       text-align: center;
       width: 100%;
     }
     .clock-tick {
       position: absolute;
-      width: 3px;
-      height: 14px;
+      width: 3px; height: 13px;
       background: #444;
-      top: 6px;
-      left: 50%;
+      top: 6px; left: 50%;
       transform-origin: 50% 124px;
     }
-    .clock-tick.tick-12 {
-      width: 4px;
-      height: 18px;
+    .clock-tick.major {
+      width: 5px; height: 18px;
       background: #ff6b35;
       top: 4px;
       transform-origin: 50% 126px;
@@ -100,11 +109,11 @@
     .clock-center {
       position: absolute;
       top: 50%; left: 50%;
-      width: 26px; height: 26px;
+      width: 28px; height: 28px;
       transform: translate(-50%, -50%);
       border-radius: 50%;
-      background: radial-gradient(circle, #ff6b35, #e55a2b);
-      box-shadow: 0 0 18px #ff6b35;
+      background: radial-gradient(circle, #ff6b35, #c0392b);
+      box-shadow: 0 0 20px #ff6b35;
       z-index: 10;
     }
     .clock-hand {
@@ -113,52 +122,61 @@
       transform-origin: 50% 100%;
       transform: translate(-50%, -100%) rotate(0deg);
       border-radius: 4px;
+      transition: transform 1s cubic-bezier(0.4, 2.08, 0.55, 0.44);
     }
     .clock-minute {
-      width: 4px;
-      height: 95px;
+      width: 4px; height: 96px;
       background: linear-gradient(to top, #ff6b35, #ffd23f);
       box-shadow: 0 0 16px rgba(255,107,53,0.9);
-      z-index: 5;
+      z-index: 6;
     }
     .clock-hour {
-      width: 10px;
-      height: 65px;
-      background: linear-gradient(to top, #e55a2b, #ff6b35);
+      width: 10px; height: 66px;
+      background: linear-gradient(to top, #c0392b, #ff6b35);
       box-shadow: 0 0 20px rgba(229,90,43,1);
-      z-index: 4;
+      z-index: 5;
     }
     .clock-time {
       position: absolute;
-      bottom: -50px;
-      left: 50%;
+      bottom: -52px; left: 50%;
       transform: translateX(-50%);
-      font-size: 2.5rem;
-      font-weight: 800;
+      font-size: 2.6rem;
+      font-weight: 900;
       letter-spacing: 0.18em;
       color: #ff6b35;
-      text-shadow: 0 0 16px rgba(255,107,53,0.9);
+      text-shadow: 0 0 20px rgba(255,107,53,0.9);
+      white-space: nowrap;
     }
+    /* META STATS */
     .meta-stats {
       display: flex;
       flex-direction: column;
-      justify-content: center;
       gap: 10px;
-      min-width: 220px;
+      min-width: 230px;
     }
-    .stat { background: #18182b; padding: 10px 16px; border-radius: 12px; box-shadow: 0 6px 18px rgba(0,0,0,0.5); }
-    .stat-label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); }
+    .stat {
+      background: #18182b;
+      padding: 12px 18px;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+    }
+    .stat-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-muted); }
     .stat-value { font-size: 1.4rem; font-weight: 700; margin-top: 4px; }
-    .high { color: var(--accent-red); }
-    .medium { color: var(--accent-orange); }
-    .sections-wrapper { max-width: 1200px; margin: 0 auto; margin-top: 28px; }
+    .high { color: #ff6b35; }
+    .medium { color: #f7931e; }
+    /* SECTIONS */
+    .sections-wrapper { max-width: 1200px; margin: 0 auto; }
     .section {
       background: var(--bg-panel);
       border-radius: 16px;
-      padding: 18px 18px 20px;
+      padding: 20px;
       margin-bottom: 22px;
       box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      border-left: 3px solid transparent;
     }
+    .section.sev-high { border-left-color: #ff6b35; }
+    .section.sev-medium { border-left-color: #f7931e; }
+    .section.sev-low { border-left-color: #4ecdc4; }
     .section-header {
       display: flex;
       justify-content: space-between;
@@ -166,304 +184,534 @@
       flex-wrap: wrap;
       gap: 10px;
       cursor: pointer;
+      user-select: none;
     }
     .section-title { font-size: 1.1rem; font-weight: 600; }
-    .section-score { display: flex; align-items: center; gap: 6px; font-size: 0.9rem; }
-    .score-bar { width: 120px; height: 10px; border-radius: 999px; background: #2b2b3a; overflow: hidden; }
-    .score-fill { height: 100%; background: linear-gradient(90deg,#4ecdc4,#27ae60,#f7931e,#ff6b35); }
+    .section-score { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; }
+    .score-bar { width: 130px; height: 10px; border-radius: 999px; background: #2b2b3a; overflow: hidden; }
+    .score-fill { height: 100%; background: linear-gradient(90deg, #4ecdc4, #27ae60, #f7931e, #ff6b35); }
     .section.collapsed .section-body { display: none; }
-    table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem; }
-    th, td { padding: 12px 10px; border-bottom: 1px solid #2b2b3a; text-align: left; vertical-align: top; }
-    th { background: #16162b; font-weight: 600; }
-    .status-badge {
-      padding: 4px 9px;
+    table { width: 100%; border-collapse: collapse; margin-top: 14px; font-size: 0.88rem; }
+    th, td { padding: 11px 10px; border-bottom: 1px solid #252535; text-align: left; vertical-align: top; }
+    th { background: #16162b; font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: #aaa; }
+    tr:hover td { background: rgba(255,255,255,0.03); }
+    .badge {
+      padding: 4px 10px;
       border-radius: 999px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      display: inline-block;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.06em;
+      display: inline-block;
     }
-    .present { background: linear-gradient(135deg,#ff6b35,#e55a2b); color:#fff; }
-    .partial { background: linear-gradient(135deg,#f7931e,#f1c40f); color:#fff; }
-    .emerging { background: linear-gradient(135deg,#ffd23f,#f1c40f); color:#222; }
-    .absent { background: linear-gradient(135deg,#4ecdc4,#27ae60); color:#fff; }
-    .strong { background: linear-gradient(135deg,#27ae60,#2ecc71); color:#fff; }
-    @media (max-width: 768px) {
-      .header { padding: 20px 14px 50px; }
-      .clock-wrapper { gap: 18px; }
+    .badge-present { background: linear-gradient(135deg,#ff6b35,#e55a2b); color:#fff; }
+    .badge-partial  { background: linear-gradient(135deg,#f7931e,#e67e22); color:#fff; }
+    .badge-emerging { background: linear-gradient(135deg,#ffd23f,#f1c40f); color:#222; }
+    .badge-absent   { background: linear-gradient(135deg,#4ecdc4,#27ae60); color:#fff; }
+    .badge-strong   { background: linear-gradient(135deg,#27ae60,#2ecc71); color:#fff; }
+    .badge-new      { background: linear-gradient(135deg,#e74c3c,#c0392b); color:#fff; font-size:0.65rem; margin-left:4px; vertical-align:middle; }
+    a.src {
+      display: inline-block;
+      margin-left: 3px;
+      padding: 2px 6px;
+      border-radius: 5px;
+      font-family: monospace;
+      font-size: 0.72rem;
+      color: #4ecdc4;
+      border: 1px solid rgba(78,205,196,0.5);
+      text-decoration: none;
+      background: rgba(78,205,196,0.1);
+      transition: all 0.2s;
+    }
+    a.src:hover { background: #4ecdc4; color: #000; transform: translateY(-1px); box-shadow: 0 3px 10px rgba(78,205,196,0.5); }
+    /* POLYMARKET */
+    .poly-section {
+      max-width: 1200px;
+      margin: 0 auto 22px;
+      background: #12122a;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      border-left: 3px solid #4ecdc4;
+    }
+    .poly-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 14px; }
+    .poly-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+    .poly-card {
+      background: #1a1a30;
+      border-radius: 10px;
+      padding: 12px 16px;
+      min-width: 140px;
+      flex: 1;
+      text-align: center;
+    }
+    .poly-date { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
+    .poly-pct { font-size: 1.6rem; font-weight: 800; }
+    .poly-vol { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+    .poly-hot { border: 1px solid #ff6b35; }
+    .pct-low { color: #4ecdc4; }
+    .pct-mid { color: #f7931e; }
+    .pct-high { color: #ff6b35; }
+    /* FOOTER */
+    .footer {
+      max-width: 1200px;
+      margin: 20px auto 0;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      padding: 16px;
+      border-top: 1px solid #222;
+    }
+    @media (max-width: 700px) {
       .doomsday-clock { width: 220px; height: 220px; }
-      .clock-minute { height: 80px; }
-      .clock-hour { height: 55px; }
-      .clock-time { bottom: -45px; font-size: 2rem; }
-      table { font-size: 0.8rem; }
-      th, td { padding: 8px 6px; }
       .clock-tick { transform-origin: 50% 104px; }
-      .clock-tick.tick-12 { transform-origin: 50% 106px; }
+      .clock-tick.major { transform-origin: 50% 106px; }
+      .clock-minute { height: 80px; }
+      .clock-hour { height: 56px; }
+      .clock-time { bottom: -45px; font-size: 2rem; }
+      table { font-size: 0.78rem; }
+      th, td { padding: 8px 6px; }
+      .poly-card { min-width: 100px; }
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <h1>US–Iran Strike Imminence Dashboard</h1>
-    <div class="sub">Snapshot as of 26 February 2026 – Geneva talks + full US buildup.</div>
-    <div class="clock-wrapper">
-      <div class="doomsday-clock">
-        <div class="clock-tick tick-12" style="transform:translateX(-50%) rotate(0deg);"></div>
-        <div class="clock-tick" style="transform:translateX(-50%) rotate(30deg);"></div>
-        <div class="clock-tick" style="transform:translateX(-50%) rotate(60deg);"></div>
-        <div class="clock-tick" style="transform:translateX(-50%) rotate(90deg);"></div>
-        <div class="clock-tick" style="transform:translateX(-50%) rotate(120deg);"></div>
-        <div class="clock-tick" style="transform:translateX(-50%) rotate(150deg);"></div>
-        <div class="clock-tick" style="transform:translateX(-50%) rotate(180deg);"></div>
-        <div class="clock-tick" style="transform:translateX(-50%) rotate(210deg);"></div>
-        <div class="clock-tick" style="transform:translateX(-50%) rotate(240deg);"></div>
-        <div class="clock-tick" style="transform:translateX(-50%) rotate(270deg);"></div>
-        <div class="clock-tick" style="transform:translateX(-50%) rotate(300deg);"></div>
-        <div class="clock-tick" style="transform:translateX(-50%) rotate(330deg);"></div>
-        <div class="clock-label">MINUTES TO<br>MIDNIGHT</div>
-        <div class="clock-hand clock-minute" id="minute-hand"></div>
-        <div class="clock-hand clock-hour" id="hour-hand"></div>
-        <div class="clock-center"></div>
-        <div class="clock-time" id="clock-time">11:41</div>
+
+<div class="header">
+  <h1>US–Iran Strike Imminence Dashboard</h1>
+  <div class="sub">Last updated: Friday, 27 February 2026 — 5:19 PM IST</div>
+
+  <div class="alert-banner">
+    &#9888; <strong>CRITICAL UPDATE:</strong> US Embassy Israel authorises non-emergency staff departure "TODAY" due to safety risks — Feb 27, 2026.
+    <a class="src" href="https://www.nytimes.com/2026/02/27/world/middleeast/us-embassy-jerusalem-authorized-departure.html" target="_blank">[NYT]</a>
+    <a class="src" href="https://www.aa.com.tr/en/americas/us-embassy-in-israel-authorizes-departure-of-non-essential-personnel-amid-us-iran-tensions/3848939" target="_blank">[AA]</a>
+  </div>
+
+  <div class="clock-wrapper">
+    <div class="doomsday-clock">
+      <div class="clock-tick major" style="transform:translateX(-50%) rotate(0deg)"></div>
+      <div class="clock-tick"       style="transform:translateX(-50%) rotate(30deg)"></div>
+      <div class="clock-tick"       style="transform:translateX(-50%) rotate(60deg)"></div>
+      <div class="clock-tick major" style="transform:translateX(-50%) rotate(90deg)"></div>
+      <div class="clock-tick"       style="transform:translateX(-50%) rotate(120deg)"></div>
+      <div class="clock-tick"       style="transform:translateX(-50%) rotate(150deg)"></div>
+      <div class="clock-tick major" style="transform:translateX(-50%) rotate(180deg)"></div>
+      <div class="clock-tick"       style="transform:translateX(-50%) rotate(210deg)"></div>
+      <div class="clock-tick"       style="transform:translateX(-50%) rotate(240deg)"></div>
+      <div class="clock-tick major" style="transform:translateX(-50%) rotate(270deg)"></div>
+      <div class="clock-tick"       style="transform:translateX(-50%) rotate(300deg)"></div>
+      <div class="clock-tick"       style="transform:translateX(-50%) rotate(330deg)"></div>
+      <div class="clock-label">MINUTES TO MIDNIGHT</div>
+      <div class="clock-hand clock-minute" id="mhand"></div>
+      <div class="clock-hand clock-hour"   id="hhand"></div>
+      <div class="clock-center"></div>
+      <div class="clock-time" id="ctime">--:--</div>
+    </div>
+
+    <div class="meta-stats">
+      <div class="stat">
+        <div class="stat-label">Overall Alignment</div>
+        <div class="stat-value high">72 / 100</div>
       </div>
-      <div class="meta-stats">
-        <div class="stat">
-          <div class="stat-label">Overall Alignment</div>
-          <div class="stat-value high">68%</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Clock Position</div>
-          <div class="stat-value high">11:41 toward 12:00</div>
-        </div>
-        <div class="stat">
-          <div class="stat-label">Status</div>
-          <div class="stat-value medium">Talks active, forces ready, proxies probing</div>
-        </div>
+      <div class="stat">
+        <div class="stat-label">Doomsday Clock</div>
+        <div class="stat-value high" id="clabel">11:43 to midnight</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Status</div>
+        <div class="stat-value medium">Talks stalled · Forces massed · Embassy evacuation</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Trend vs Feb 21</div>
+        <div class="stat-value high">&#8593; +10 pts (62 &rarr; 72)</div>
       </div>
     </div>
   </div>
+</div>
 
-  <div class="sections-wrapper">
-    <!-- Section 1: Political & Leadership -->
-    <div class="section" id="sec1">
-      <div class="section-header" onclick="toggleSection('sec1')">
-        <div class="section-title">1. Political &amp; Leadership Signals</div>
-        <div class="section-score"><span>Score 70/100</span><div class="score-bar"><div class="score-fill" style="width:70%"></div></div></div>
-      </div>
-      <div class="section-body">
-        <table>
-          <thead><tr><th>Sign</th><th>Status</th><th>Alignment</th><th>Evidence</th></tr></thead>
-          <tbody>
-            <tr>
-              <td>Trump reiterates 10–15 day deadline and warns of "bad things"</td>
-              <td><span class="status-badge present">Present</span></td>
-              <td>High</td>
-              <td>State of the Union + follow‑up interviews emphasize limited time for a deal.[web:137][web:140]</td>
-            </tr>
-            <tr>
-              <td>Senior officials message readiness but avoid confirming decision</td>
-              <td><span class="status-badge partial">Partial</span></td>
-              <td>Medium</td>
-              <td>Briefings state military is prepared while leaving decision "with the President".[web:134][web:141]</td>
-            </tr>
-            <tr>
-              <td>Allies assume strike risk but still push diplomacy</td>
-              <td><span class="status-badge emerging">Emerging</span></td>
-              <td>Medium</td>
-              <td>European and Gulf partners warn about escalation but stress Iran must compromise.[web:103][web:140]</td>
-            </tr>
-          </tbody>
-        </table>
+<!-- POLYMARKET ODDS -->
+<div class="poly-section">
+  <div class="poly-title">&#128200; Polymarket Odds — "US Strikes Iran By…?" (Feb 27)</div>
+  <div class="poly-grid">
+    <div class="poly-card poly-hot">
+      <div class="poly-date">by Feb 28</div>
+      <div class="poly-pct pct-low">18%</div>
+      <div class="poly-vol">Vol $37.5M</div>
+    </div>
+    <div class="poly-card">
+      <div class="poly-date">by Mar 7</div>
+      <div class="poly-pct pct-mid">36%</div>
+      <div class="poly-vol">Vol $0.6M</div>
+    </div>
+    <div class="poly-card">
+      <div class="poly-date">by Mar 15</div>
+      <div class="poly-pct pct-mid">48%</div>
+      <div class="poly-vol">Vol $2.8M</div>
+    </div>
+    <div class="poly-card poly-hot">
+      <div class="poly-date">by Mar 31</div>
+      <div class="poly-pct pct-high">60%</div>
+      <div class="poly-vol">Vol $14.2M</div>
+    </div>
+    <div class="poly-card">
+      <div class="poly-date">by Jun 30</div>
+      <div class="poly-pct pct-high">68%</div>
+      <div class="poly-vol">Vol $7.2M</div>
+    </div>
+    <div class="poly-card">
+      <div class="poly-date">No strike by Feb 28</div>
+      <div class="poly-pct pct-low" style="color:#4ecdc4">73%</div>
+      <div class="poly-vol">Vol $1.9M</div>
+    </div>
+  </div>
+  <div style="margin-top:10px;font-size:0.78rem;color:var(--text-muted)">
+    Sources:
+    <a class="src" href="https://polymarket.com/event/us-strikes-iran-by" target="_blank">[Polymarket]</a>
+    <a class="src" href="https://polymarket.com/event/us-next-strikes-iran-on-843" target="_blank">[Next Strikes On]</a>
+    <a class="src" href="https://polychances.com/polymarket-events/us-next-strikes-iran-on-843/" target="_blank">[Polychances]</a>
+  </div>
+</div>
+
+<div class="sections-wrapper">
+
+  <!-- 1. POLITICAL -->
+  <div class="section sev-high" id="s1">
+    <div class="section-header" onclick="tog('s1')">
+      <div class="section-title">1. Political &amp; Leadership Signals</div>
+      <div class="section-score">
+        <span>70 / 100</span>
+        <div class="score-bar"><div class="score-fill" style="width:70%"></div></div>
       </div>
     </div>
-
-    <!-- Section 2: Military Posture -->
-    <div class="section" id="sec2">
-      <div class="section-header" onclick="toggleSection('sec2')">
-        <div class="section-title">2. Military Posture</div>
-        <div class="section-score"><span>Score 75/100</span><div class="score-bar"><div class="score-fill" style="width:75%"></div></div></div>
-      </div>
-      <div class="section-body">
-        <table>
-          <thead><tr><th>Sign</th><th>Status</th><th>Alignment</th><th>Evidence</th></tr></thead>
-          <tbody>
-            <tr>
-              <td>Dual carrier groups and supporting assets in theater</td>
-              <td><span class="status-badge present">Present</span></td>
-              <td>High</td>
-              <td>USS Abraham Lincoln in Arabian Sea and USS Gerald R. Ford in Mediterranean, plus F‑35s, AWACS and bombers.[web:2][web:50][web:39]</td>
-            </tr>
-            <tr>
-              <td>Layered missile defences protecting US and allied bases</td>
-              <td><span class="status-badge strong">Strong</span></td>
-              <td>High</td>
-              <td>Patriot, THAAD and Aegis deployments expanded across the region.[web:2][web:50]</td>
-            </tr>
-            <tr>
-              <td>Wartime posture indicators (no‑fly zones, mass evacuations)</td>
-              <td><span class="status-badge partial">Partial</span></td>
-              <td>Medium</td>
-              <td>Earlier January drawdowns and exercises, but no new large‑scale evacuations or public no‑fly declarations.[web:41][web:32]</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Section 3: Diplomatic Track -->
-    <div class="section" id="sec3">
-      <div class="section-header" onclick="toggleSection('sec3')">
-        <div class="section-title">3. Diplomatic Track</div>
-        <div class="section-score"><span>Score 65/100</span><div class="score-bar"><div class="score-fill" style="width:65%"></div></div></div>
-      </div>
-      <div class="section-body">
-        <table>
-          <thead><tr><th>Sign</th><th>Status</th><th>Alignment</th><th>Evidence</th></tr></thead>
-          <tbody>
-            <tr>
-              <td>Active Geneva talks with "practical" proposals</td>
-              <td><span class="status-badge present">Present</span></td>
-              <td>Moderating</td>
-              <td>US and Iran engage via intermediaries on nuclear constraints and sanctions relief.[web:133][web:141]</td>
-            </tr>
-            <tr>
-              <td>Iran refuses to accept permanent zero enrichment</td>
-              <td><span class="status-badge present">Present</span></td>
-              <td>Escalatory</td>
-              <td>Pezeshkian insists Iran will not "bow down" to US pressure or abandon enrichment.[web:104][web:105]</td>
-            </tr>
-            <tr>
-              <td>European mediators still see path to a deal</td>
-              <td><span class="status-badge partial">Partial</span></td>
-              <td>Moderating</td>
-              <td>Reports of possible compromises on monitoring and enrichment levels, but gaps on missiles and proxies.[web:135][web:103]</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Section 4: Intelligence & Triggers -->
-    <div class="section" id="sec4">
-      <div class="section-header" onclick="toggleSection('sec4')">
-        <div class="section-title">4. Intelligence &amp; Triggers</div>
-        <div class="section-score"><span>Score 65/100</span><div class="score-bar"><div class="score-fill" style="width:65%"></div></div></div>
-      </div>
-      <div class="section-body">
-        <table>
-          <thead><tr><th>Sign</th><th>Status</th><th>Alignment</th><th>Evidence</th></tr></thead>
-          <tbody>
-            <tr>
-              <td>Proxy attacks on US forces in Iraq/Syria</td>
-              <td><span class="status-badge present">Present</span></td>
-              <td>High</td>
-              <td>Iran‑aligned militias launch rockets/drones at bases hosting US troops; intercepts reported, no US fatalities.[web:112][web:111]</td>
-            </tr>
-            <tr>
-              <td>No new mass‑casualty incident directly attributable to Iran</td>
-              <td><span class="status-badge present">Present</span></td>
-              <td>Moderating</td>
-              <td>Attacks remain below the threshold that historically forces immediate large‑scale retaliation.[web:112][web:3]</td>
-            </tr>
-            <tr>
-              <td>US warnings about consequences of lethal proxy attacks</td>
-              <td><span class="status-badge partial">Partial</span></td>
-              <td>High</td>
-              <td>Officials signal that a deadly strike on US troops could rapidly change the calculus.[web:111][web:5]</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Section 5: Host-Nation & Allies -->
-    <div class="section" id="sec5">
-      <div class="section-header" onclick="toggleSection('sec5')">
-        <div class="section-title">5. Host‑Nation &amp; Allied Alignment</div>
-        <div class="section-score"><span>Score 60/100</span><div class="score-bar"><div class="score-fill" style="width:60%"></div></div></div>
-      </div>
-      <div class="section-body">
-        <table>
-          <thead><tr><th>Sign</th><th>Status</th><th>Alignment</th><th>Evidence</th></tr></thead>
-          <tbody>
-            <tr>
-              <td>Gulf basing and airspace support for US operations</td>
-              <td><span class="status-badge present">Present</span></td>
-              <td>High</td>
-              <td>US continues to use regional bases and airspace for drills and deployments.[web:41][web:50]</td>
-            </tr>
-            <tr>
-              <td>Israel in close coordination and high readiness</td>
-              <td><span class="status-badge present">Present</span></td>
-              <td>High</td>
-              <td>Ongoing consultations and shared concern about Iran's nuclear advances.[web:105][web:140]</td>
-            </tr>
-            <tr>
-              <td>Europe focused on preventing war but pressuring Iran</td>
-              <td><span class="status-badge emerging">Emerging</span></td>
-              <td>Medium</td>
-              <td>EU states balance warnings against strikes with criticism of Iran's behavior.[web:103][web:141]</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Section 6: Domestic Environment -->
-    <div class="section" id="sec6">
-      <div class="section-header" onclick="toggleSection('sec6')">
-        <div class="section-title">6. US Domestic Political Environment</div>
-        <div class="section-score"><span>Score 70/100</span><div class="score-bar"><div class="score-fill" style="width:70%"></div></div></div>
-      </div>
-      <div class="section-body">
-        <table>
-          <thead><tr><th>Sign</th><th>Status</th><th>Alignment</th><th>Evidence</th></tr></thead>
-          <tbody>
-            <tr>
-              <td>Strike framed as test of resolve and deterrence</td>
-              <td><span class="status-badge present">Present</span></td>
-              <td>High</td>
-              <td>Trump links Iran decision to avoiding worse conflict later and protecting US credibility.[web:137][web:140]</td>
-            </tr>
-            <tr>
-              <td>Congress briefed on options; debates over scope</td>
-              <td><span class="status-badge partial">Partial</span></td>
-              <td>Medium</td>
-              <td>Legislators focus on authorization and war powers rather than outright blocking strikes.[web:135][web:141]</td>
-            </tr>
-            <tr>
-              <td>Media narrative highlighting Iranian threat and US capability</td>
-              <td><span class="status-badge present">Present</span></td>
-              <td>High</td>
-              <td>Coverage emphasizes Iran's crackdown and nuclear program alongside US military buildup.[web:137][web:135]</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Sign</th><th>Status</th><th>Alignment</th><th>Evidence &amp; Sources</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Trump 10–15 day deadline; warns of "bad things"</td>
+            <td><span class="badge badge-present">Present</span></td>
+            <td>High</td>
+            <td>Deadline set ~Feb 18–19, expires early March.
+              <a class="src" href="https://www.bbc.com/news/articles/cdxzk4gvzp0o" target="_blank">[BBC]</a>
+              <a class="src" href="https://www.timesofisrael.com/trump-says-hell-make-decision-on-iran-strike-in-10-to-15-days/" target="_blank">[ToI]</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Senior official messaging on military readiness</td>
+            <td><span class="badge badge-partial">Partial</span></td>
+            <td>Medium</td>
+            <td>VP Vance: strikes "under consideration" but "no drawn‑out war".
+              <a class="src" href="https://www.cnbc.com/2026/02/27/us-iran-nuclear-talks-oil-middle-east.html" target="_blank">[CNBC]</a>
+            </td>
+          </tr>
+          <tr>
+            <td>"Ready to strike" media leaks</td>
+            <td><span class="badge badge-present">Present</span></td>
+            <td>High</td>
+            <td>CNN Feb 18: military prepared to strike "as early as this weekend".
+              <a class="src" href="https://edition.cnn.com/2026/02/18/politics/military-strike-trump-us-iran" target="_blank">[CNN]</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Allies assume strike risk; bracing</td>
+            <td><span class="badge badge-present">Present</span></td>
+            <td>High</td>
+            <td>Gulf states, Europe, Israel all preparing for retaliation scenarios.
+              <a class="src" href="https://www.reuters.com/world/middle-east/us-iran-slide-towards-conflict-military-buildup-eclipses-talks-2026-02-20/" target="_blank">[Reuters]</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
-  <script>
-    // Set overall score and compute clock position (11:00 to 12:00 mapping)
-    const score = 68; // 0–100
-    const minutesFrom11 = Math.round(score * 0.60); // 60 minutes between 11:00 and 12:00
-    let hour = 11;
-    let minute = minutesFrom11;
-    if (minute >= 60) { hour = 12; minute = 0; }
-    const displayTime = `${hour}:${minute.toString().padStart(2,'0')}`;
-    document.getElementById('clock-time').textContent = displayTime;
+  <!-- 2. MILITARY -->
+  <div class="section sev-high" id="s2">
+    <div class="section-header" onclick="tog('s2')">
+      <div class="section-title">2. Military Posture</div>
+      <div class="section-score">
+        <span>80 / 100</span>
+        <div class="score-bar"><div class="score-fill" style="width:80%"></div></div>
+      </div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Sign</th><th>Status</th><th>Alignment</th><th>Evidence &amp; Sources</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Dual carrier strike groups in theater</td>
+            <td><span class="badge badge-present">Present</span></td>
+            <td>High</td>
+            <td>Abraham Lincoln (Arabian Sea) + Gerald R. Ford (Mediterranean); largest buildup in region in decades.
+              <a class="src" href="https://www.militarytimes.com/news/your-military/2026/02/26/us-military-assembles-largest-force-of-warships-aircraft-in-middle-east/" target="_blank">[MilTimes]</a>
+              <a class="src" href="https://www.aljazeera.com/news/2026/2/20/tracking-the-rapid-us-military-build-up-near-iran" target="_blank">[AJZ]</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Layered missile defences in place</td>
+            <td><span class="badge badge-strong">Strong</span></td>
+            <td>High</td>
+            <td>Patriot, THAAD and Aegis deployments expanded; sized for retaliation defence.
+              <a class="src" href="https://en.wikipedia.org/wiki/2026_United_States_military_buildup_in_the_Middle_East" target="_blank">[Wiki]</a>
+            </td>
+          </tr>
+          <tr>
+            <td>B-2s, F-35s, AWACS forward‑deployed</td>
+            <td><span class="badge badge-present">Present</span></td>
+            <td>High</td>
+            <td>Heavy bombers on alert; E-3 AWACS on station; F-35 squadrons at Jordan.
+              <a class="src" href="https://www.cnn.com/2026/02/20/politics/military-power-buildup-us-iran-intl-vis" target="_blank">[CNN]</a>
+              <a class="src" href="https://responsiblestatecraft.org/buildup-iran/" target="_blank">[RSC]</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Non-essential personnel evacuated from Israel <span class="badge badge-new">NEW</span></td>
+            <td><span class="badge badge-present">Present</span></td>
+            <td>Very High</td>
+            <td>State Dept authorises departure of non-emergency staff "TODAY"; Ambassador Huckabee urges immediate exit.
+              <a class="src" href="https://www.nytimes.com/2026/02/27/world/middleeast/us-embassy-jerusalem-authorized-departure.html" target="_blank">[NYT]</a>
+              <a class="src" href="https://www.timesofisrael.com/liveblog_entry/us-tells-non-emergency-staff-family-members-to-leave-israel-over-safety-risks/" target="_blank">[ToI]</a>
+              <a class="src" href="https://www.aa.com.tr/en/americas/us-embassy-in-israel-authorizes-departure-of-non-essential-personnel-amid-us-iran-tensions/3848939" target="_blank">[AA]</a>
+            </td>
+          </tr>
+          <tr>
+            <td>CENTCOM wartime footing / rehearsals</td>
+            <td><span class="badge badge-partial">Partial</span></td>
+            <td>Medium</td>
+            <td>Jan multi-day exercises; no public new no-fly zones or formal wartime declaration.
+              <a class="src" href="https://www.theguardian.com/us-news/2026/jan/27/us-announces-multi-day-aerial-military-drills-in-the-middle-east-amid-iran-tensi" target="_blank">[Guardian]</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-    // Analog hand angles
-    const minuteDeg = minute * 6; // 6 degrees per minute
-    const hourDeg = (hour % 12) * 30 + minute * 0.5; // 30 deg/hour + 0.5 per minute
-    document.getElementById('minute-hand').style.transform = `translate(-50%, -100%) rotate(${minuteDeg}deg)`;
-    document.getElementById('hour-hand').style.transform = `translate(-50%, -100%) rotate(${hourDeg}deg)`;
+  <!-- 3. DIPLOMATIC -->
+  <div class="section sev-medium" id="s3">
+    <div class="section-header" onclick="tog('s3')">
+      <div class="section-title">3. Diplomatic Track</div>
+      <div class="section-score">
+        <span>55 / 100</span>
+        <div class="score-bar"><div class="score-fill" style="width:55%"></div></div>
+      </div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Sign</th><th>Status</th><th>Alignment</th><th>Evidence &amp; Sources</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Geneva Round 3 ends — no deal <span class="badge badge-new">NEW</span></td>
+            <td><span class="badge badge-present">Present</span></td>
+            <td>High (escalatory)</td>
+            <td>"Most intense" talks end with no breakthrough; Iran rejects dismantling facilities.
+              <a class="src" href="https://www.cnbc.com/2026/02/27/us-iran-nuclear-talks-oil-middle-east.html" target="_blank">[CNBC]</a>
+              <a class="src" href="https://www.pbs.org/newshour/world/as-risk-of-war-looms-u-s-iran-nuclear-talks-wrap-with-no-deal-announced" target="_blank">[PBS]</a>
+              <a class="src" href="https://time.com/7381568/united-states-iran-war-fears-nuclear-weapons-sanctions-talks/" target="_blank">[TIME]</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Iran refuses zero-enrichment; dismisses uranium transfer</td>
+            <td><span class="badge badge-present">Present</span></td>
+            <td>High (escalatory)</td>
+            <td>Iranian FM: "will not give up enrichment"; rejects proposals to ship uranium abroad.
+              <a class="src" href="https://www.pbs.org/newshour/world/as-risk-of-war-looms-u-s-iran-nuclear-talks-wrap-with-no-deal-announced" target="_blank">[PBS]</a>
+              <a class="src" href="https://www.aljazeera.com/news/2026/2/22/iran-will-not-bow-down-to-us-pressure-in-nuclear-talks-pezeshkian-says" target="_blank">[AJZ]</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Technical talks in Vienna next week still scheduled</td>
+            <td><span class="badge badge-partial">Partial</span></td>
+            <td>Medium (moderating)</td>
+            <td>Oman mediator: "significant progress"; IAEA talks in Vienna to continue.
+              <a class="src" href="https://www.aljazeera.com/news/liveblog/2026/2/26/us-iran-talks-live-nuclear-talks-to-kick-off-in-geneva-amid-tensions" target="_blank">[AJZ Live]</a>
+              <a class="src" href="https://www.reuters.com/world/middle-east/us-iran-nuclear-talks-resume-geneva-against-backdrop-military-threat-2026-02-26/" target="_blank">[Reuters]</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Deadline expiring imminently (~Mar 2–7)</td>
+            <td><span class="badge badge-present">Present</span></td>
+            <td>High</td>
+            <td>10–15 day clock set Feb 18–20 expires early March; no extension announced.
+              <a class="src" href="https://www.bbc.com/news/articles/c86yjnw4x49o" target="_blank">[BBC]</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-    function toggleSection(id) {
-      const el = document.getElementById(id);
-      if (el) el.classList.toggle('collapsed');
-    }
-  </script>
+  <!-- 4. TRIGGERS -->
+  <div class="section sev-high" id="s4">
+    <div class="section-header" onclick="tog('s4')">
+      <div class="section-title">4. Intelligence &amp; Trigger Events</div>
+      <div class="section-score">
+        <span>70 / 100</span>
+        <div class="score-bar"><div class="score-fill" style="width:70%"></div></div>
+      </div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Sign</th><th>Status</th><th>Alignment</th><th>Evidence &amp; Sources</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Iran proxy attacks on US forces in Iraq/Syria ongoing <span class="badge badge-new">NEW</span></td>
+            <td><span class="badge badge-present">Present</span></td>
+            <td>High</td>
+            <td>Militia drone/rocket attacks on US bases intercepted; no US fatalities confirmed.
+              <a class="src" href="https://understandingwar.org/research/middle-east/iran-update-february-26-2026/" target="_blank">[ISW]</a>
+              <a class="src" href="https://www.nytimes.com/2026/02/22/us/politics/iran-terrorist-attacks-proxies-trump.html" target="_blank">[NYT]</a>
+            </td>
+          </tr>
+          <tr>
+            <td>US Embassy Israel departure — pre-strike signal <span class="badge badge-new">NEW</span></td>
+            <td><span class="badge badge-present">Present</span></td>
+            <td>Very High</td>
+            <td>Classic pre-conflict precaution: State Dept authorises non-emergency departure from Mission Israel "due to safety risks".
+              <a class="src" href="https://il.usembassy.gov/travel-advisory-february-27-2026/" target="_blank">[US Embassy IL]</a>
+              <a class="src" href="https://www.nytimes.com/2026/02/27/world/middleeast/us-embassy-jerusalem-authorized-departure.html" target="_blank">[NYT]</a>
+            </td>
+          </tr>
+          <tr>
+            <td>No mass-casualty trigger incident yet</td>
+            <td><span class="badge badge-partial">Partial</span></td>
+            <td>Moderating</td>
+            <td>Attacks remain below threshold for immediate direct retaliation inside Iran.
+              <a class="src" href="https://understandingwar.org/research/middle-east/iran-update-february-26-2026/" target="_blank">[ISW]</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Trump Iranian missile claim disputed by US intel</td>
+            <td><span class="badge badge-partial">Partial</span></td>
+            <td>Medium</td>
+            <td>Reuters: Trump missile threat claims not fully supported by US intelligence assessments.
+              <a class="src" href="https://www.reuters.com/business/aerospace-defense/trump-iranian-missile-claim-unsupported-by-us-intelligence-say-sources-2026-02-26/" target="_blank">[Reuters]</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 5. HOST NATIONS -->
+  <div class="section sev-medium" id="s5">
+    <div class="section-header" onclick="tog('s5')">
+      <div class="section-title">5. Host-Nation &amp; Allied Alignment</div>
+      <div class="section-score">
+        <span>65 / 100</span>
+        <div class="score-bar"><div class="score-fill" style="width:65%"></div></div>
+      </div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Sign</th><th>Status</th><th>Alignment</th><th>Evidence &amp; Sources</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Gulf basing and airspace for US operations</td>
+            <td><span class="badge badge-present">Present</span></td>
+            <td>High</td>
+            <td>US continues extensive use of Qatar, UAE, Saudi airspace and bases.
+              <a class="src" href="https://en.wikipedia.org/wiki/2026_United_States_military_buildup_in_the_Middle_East" target="_blank">[Wiki]</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Israel in high readiness; coordinating with US <span class="badge badge-new">NEW</span></td>
+            <td><span class="badge badge-present">Present</span></td>
+            <td>High</td>
+            <td>US embassy evacuation and military posture suggest close coordination ahead of potential action.
+              <a class="src" href="https://www.timesofisrael.com/liveblog_entry/us-tells-non-emergency-staff-family-members-to-leave-israel-over-safety-risks/" target="_blank">[ToI]</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Europe warns of "devastating war"; urges deal</td>
+            <td><span class="badge badge-emerging">Emerging</span></td>
+            <td>Medium</td>
+            <td>EU and UK stress Iranian concessions needed while warning against military escalation.
+              <a class="src" href="https://time.com/7381568/united-states-iran-war-fears-nuclear-weapons-sanctions-talks/" target="_blank">[TIME]</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Russia/China warn against escalation</td>
+            <td><span class="badge badge-partial">Partial</span></td>
+            <td>Medium</td>
+            <td>Limited ability to constrain US action; mainly rhetorical opposition.
+              <a class="src" href="https://www.reuters.com/world/middle-east/russia-warns-escalating-iran-tensions-amid-us-military-build-up-2026-02-19/" target="_blank">[Reuters]</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 6. DOMESTIC -->
+  <div class="section sev-medium" id="s6">
+    <div class="section-header" onclick="tog('s6')">
+      <div class="section-title">6. US Domestic Political Environment</div>
+      <div class="section-score">
+        <span>70 / 100</span>
+        <div class="score-bar"><div class="score-fill" style="width:70%"></div></div>
+      </div>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead><tr><th>Sign</th><th>Status</th><th>Alignment</th><th>Evidence &amp; Sources</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>Iran framed as test of resolve; "peace through strength"</td>
+            <td><span class="badge badge-present">Present</span></td>
+            <td>High</td>
+            <td>State of the Union tied Iran policy to deterrence doctrine.
+              <a class="src" href="https://www.foxnews.com/politics/trumps-iran-ultimatum-enters-decisive-stretch-after-state-union" target="_blank">[FoxNews]</a>
+              <a class="src" href="https://www.cnbc.com/2026/02/25/us-iran-talks-nuclear-trump-oil-prices-war-conflict.html" target="_blank">[CNBC]</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Congress briefed; debate on scope, not "whether"</td>
+            <td><span class="badge badge-partial">Partial</span></td>
+            <td>Medium</td>
+            <td>Limited congressional resistance; war powers discussions ongoing.
+              <a class="src" href="https://www.nbcnews.com/world/iran/us-iran-nuclear-talks-trump-military-buildup-attack-missiles-rcna260764" target="_blank">[NBC]</a>
+            </td>
+          </tr>
+          <tr>
+            <td>Pro-strike media narrative dominant</td>
+            <td><span class="badge badge-present">Present</span></td>
+            <td>High</td>
+            <td>Coverage emphasises Iranian intransigence and US military capability.
+              <a class="src" href="https://www.foxnews.com/politics/trump-says-iran-already-has-us-terms-military-strike-clock-ticks" target="_blank">[FoxNews]</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  Doomsday Clock: 0% = 11:00 &nbsp;|&nbsp; 100% = 12:00 &nbsp;|&nbsp; Current 72% = 11:43 &nbsp;|&nbsp;
+  All citations link to original sources &nbsp;|&nbsp;
+  <a class="src" href="https://polymarket.com/event/us-strikes-iran-by" target="_blank">Polymarket Live</a>
+  &nbsp;|&nbsp; Data as of 27 Feb 2026 5:19 PM IST
+</div>
+
+<script>
+  const SCORE = 72;
+  const minutesFrom11 = Math.round(SCORE * 0.60);
+  let hour = 11, minute = minutesFrom11;
+  if (minute >= 60) { hour = 12; minute = 0; }
+  const display = hour + ":" + String(minute).padStart(2, "0");
+  document.getElementById("ctime").textContent = display;
+  document.getElementById("clabel").textContent = display + " to midnight";
+
+  // clock-hand angles: 0deg = 12 o'clock (pointing up)
+  const minDeg  = minute * 6;
+  const hourDeg = (hour % 12) * 30 + minute * 0.5;
+  document.getElementById("mhand").style.transform = "translate(-50%,-100%) rotate(" + minDeg  + "deg)";
+  document.getElementById("hhand").style.transform = "translate(-50%,-100%) rotate(" + hourDeg + "deg)";
+
+  function tog(id) {
+    document.getElementById(id).classList.toggle("collapsed");
+  }
+</script>
 </body>
 </html>
